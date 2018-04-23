@@ -1,0 +1,47 @@
+This is the workflow for resources.
+
+This is a directory based workflow to enable people to edit these in
+multiple geographic locations.  (If files are moved using "git mv" then the
+history goes with the files)
+
+Files *must* be moved using "git mv".  This allows moves to be pushed
+enabling "claiming for editting" (avoiding duplicated effort) and also
+retaining of history.
+
+Directories:
+    * WIP - Chunk of files that are a WIP - generally speaking each editor
+      should have their own WIP directory.  (A WIP directory means you're
+      spending less time worrying about which files you're working on, and
+      also allows users to "claim" files when working on them)
+
+    * 0.tostart - Files that have not been started
+
+    * 1.question_outlines - Files that have the core questions written -
+      these effectively form a syllabus.
+
+    * 2.outline_answers - Files that have sufficient answers to the
+      questions.  This is a first draft.  The important thing at this stage
+      is "are the answers right"
+
+    * 3.rearranged_answers - Files containing the answers, that have been
+      rearranged into a better order improving the "flow" of the resource.
+
+    * 4.language_simplified - Files that have had their language simplified. 
+      These should be checked using FOG index and fleisch-kincaid reading
+      age scores.  The files should ideally be at the age range of no older
+      than 11/12
+
+At all points in time:
+    * Consider creating concept files
+    * Consider - should I split this document in two?
+
+Once documents enter the language_simpified stage, they can be copied into
+the resources directory.
+
+The workflow for concepts is different for the simple reason that they're
+there primarily for dependency provision, and so for authors not for
+learners.
+
+As they are completed, once dropped into resources/concepts you can test
+them by running als.py in this directory
+
