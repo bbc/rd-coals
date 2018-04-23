@@ -1,0 +1,80 @@
+A Dynamic Adaptive Learning System
+----------------------------------
+
+Overview:
+
+This repository contains:
+
+  * packages/
+    - als_core/
+      - The core adaptive learning system codebase
+      - a script als.py - this loads the resources, and runs through the
+        tutorial.  Note; this is a prototype to test the resources, edit
+        flow, json serialisation and inference algorithms
+      - This provides debian/ubuntu packaging
+        - requires python3-stdeb and devscripts to be installed
+      - Packaging is derived from python packaging so is suitable for
+        pypi, launchpad, etc as well
+      - Go to this directory and type "make"
+
+    - ecs_core/
+      - A simple ECS core - which is used to represent the resources and
+        concepts in the system
+      - This provides the JSON serialisation/deserialisation mechanism and
+        opens the door to simplifications down the line.  This requirement
+        for JSON serialisation is what is different from other ECS systems
+      - The focus on using the JSON serialisable ECS means that alternative
+        front ends can be written in other languages, while being able to
+        interoperate on a data level.
+      - Same packaging options as als_core.
+
+  * examples/
+    - integration/
+      - This contains a simple example of what a tutorial can look like.
+      - concepts/ - contains some example concept files.
+      - resources/ - in this example this is empty until populated from
+                     one of:
+
+        - resources_explicit/ - Contains resources with explicit fine
+                   grained control of conceptual dependency constraints
+
+        - resources_implicit/ - Contains resources with simple dependency
+                   constraints based on resources not concepts.  However,
+                   the conceptual dependencies are inferred.  Inferred
+                   dependencies are never as good as the explicit ones, but
+                   the conversion to conceptual dependencies mean the
+                   dynamic behaviour still operates correctly.
+
+    - content_flow/ - A snapshot of the resources from the resource flow. 
+                   These show what "real" content looks like in the system
+
+    - resource_edit_flow/ - An authoring workflow
+
+      - WIP/ - place for editting files that are WIP.  Contains
+               subdirectories - one per editor.  These allow editors
+               to "claim" files while working remotely.
+
+      - 0.tostart - Resources to start are in here
+      - 1.question_outlines - Once the questions are written, they move here
+      - 2.outline_answers - Once answers have been written they move here
+      - 3.rearranged_answers - The answers get rearranged to something
+             readable and moved here
+
+      - 4.language_simplified - Once the language has been simplified they
+             move here.  Once happy they can be copied into "resources/"
+             (see below)
+
+      - concepts/ - Completed concepts can be put here
+      - resources/ - Completed resources can be put here
+         - If there are resources/concepts in the last two directories,
+           their behaviour can be tested by running als.py in that
+           directory.
+
+
+  * build_core_tutorial.py - This is a script to generate the initial set of
+    resources that were put into 0.tostart/.  This isn't strictly necessary,
+    but includes the grid of resources to be written at the top by
+    concepts/learning levels.
+
+
+
