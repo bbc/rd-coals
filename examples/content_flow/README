@@ -1,0 +1,16 @@
+This is the core of set of resources for the resource_edit_flow to target.
+
+As resources come out of the resource_edit_flow the following things should
+happen:
+
+   * The resources get copied into the resources directory
+   * The concept files get copied into the concepts directory
+
+To run this you must have installed the libraries.
+
+To run this (sanity check really) you do this:
+
+   $ als.py 
+
+This runs the core engine over the system.
+
