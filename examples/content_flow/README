@@ -10,7 +10,7 @@ To run this you must have installed the libraries.
 
 To run this (sanity check really) you do this:
 
-   $ als.py 
+   $ coals
 
 This runs the core engine over the system.
 

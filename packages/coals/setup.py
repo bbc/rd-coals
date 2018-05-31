@@ -36,23 +36,23 @@ def find_packages(path, base="" ):
 packages = find_packages(".")
 package_names = packages.keys()
 
-setup(name = "als_core",
-      version = "0.0.1",
-      description = "An ALS Core",
+setup(name = "coals",
+      version = "0.1.2",
+      description = "An Adaptive Learning System Core",
       author='Michael Sparks',
       author_email="michael.sparks@bbc.co.uk",
       license='All Rights Reserved',
 
       scripts = [
-                  "bin/als.py"
+                  "bin/coals"
                 ],
 
       packages = package_names,
       package_dir = packages,
       package_data={},
       long_description = """
-als_core - An ALS Toolkit
--------------------------
+coals - An Adaptive Learning System Core
+----------------------------------------
 
 """
       )

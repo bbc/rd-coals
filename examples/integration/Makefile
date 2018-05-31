@@ -4,7 +4,7 @@ all:
 	@echo "implicit - copy the resources based on derived constraints into resources"
 	@echo "explicit - copy the resources with explicit constraints into resources"
 	@echo
-	@echo "demo - demo the resources - requires als_core to be installed"
+	@echo "demo - demo the resources - requires 'coals' to be installed"
 	@echo
 	
 implicit:
@@ -16,4 +16,4 @@ explicit:
 	cp resources_explicit/* resources/
 
 demo:
-	als.py
+	coals

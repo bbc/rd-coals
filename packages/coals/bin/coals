@@ -10,10 +10,10 @@
 import pprint
 import os
 
-import als_core
-from als_core import Debug, initialise_system, banner, infer_concepts_and_ngram_deltas, infer_conceptual_dependencies
-from als_core import find_resources_for_user, filter_secure_resources, ask_user_to_choose_resource, present_resource
-from als_core import update_user_for_resource, concept_ids, resource_ids
+import coals
+from coals import Debug, initialise_system, banner, infer_concepts_and_ngram_deltas, infer_conceptual_dependencies
+from coals import find_resources_for_user, filter_secure_resources, ask_user_to_choose_resource, present_resource
+from coals import update_user_for_resource, concept_ids, resource_ids
 
 world = initialise_system()
 

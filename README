@@ -6,9 +6,9 @@ Overview:
 This repository contains:
 
   * packages/
-    - als_core/
+    - coals/
       - The core adaptive learning system codebase
-      - a script als.py - this loads the resources, and runs through the
+      - a script `coals` - this loads the resources, and runs through the
         tutorial.  Note; this is a prototype to test the resources, edit
         flow, json serialisation and inference algorithms
       - This provides debian/ubuntu packaging
@@ -26,7 +26,7 @@ This repository contains:
       - The focus on using the JSON serialisable ECS means that alternative
         front ends can be written in other languages, while being able to
         interoperate on a data level.
-      - Same packaging options as als_core.
+      - Same packaging options as `coals`.
 
   * examples/
     - integration/
@@ -67,7 +67,7 @@ This repository contains:
       - concepts/ - Completed concepts can be put here
       - resources/ - Completed resources can be put here
          - If there are resources/concepts in the last two directories,
-           their behaviour can be tested by running als.py in that
+           their behaviour can be tested by running `coals` in that
            directory.
 
 
