@@ -23,4 +23,5 @@ dist:
 	python3 setup.py sdist
 	(cd dist ; py2dsc-deb --with-python3=True --with-python2=False ecs_core-*.tar.gz )
 	mv dist/deb_dist/*deb .
-	echo "Now install", *deb
+	echo "To install:"
+	echo "sudo dpkg -i" *deb

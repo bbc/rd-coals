@@ -4,6 +4,7 @@ all:
 	@echo clean - clean
 	@echo install - local install
 	@echo dist - make debian package
+	@echo devloop - make and install debian package
 
 clean:
 	rm -f *~
@@ -23,4 +24,9 @@ dist:
 	python3 setup.py sdist
 	(cd dist ; py2dsc-deb --with-python3=True --with-python2=False *.tar.gz )
 	mv dist/deb_dist/*deb .
-	echo "Now install", *deb
+	echo "sudo dpkg -i" *deb
+
+devloop:
+	make clean
+	make dist
+	sudo dpkg -i *deb
