@@ -14,43 +14,11 @@ import os
 
 from ecs_core.ecs_core import Component, System, World, Entity, Quit, mkComponent
 from .util import load_mime_like_entity_collection
+from .coals_components import *
 
 def Debug(*args):
     if debug:
         print(*args)
-
-
-# Components used in Concepts
-Concept = mkComponent("Concept", "logical_id") # LogicalID 
-Description = mkComponent("Description", "description")
-Depends = mkComponent("Depends", "depends")
-Suggests = mkComponent("Suggests", "suggests")
-NGramDecay = mkComponent("NGramDecay", "decay_type", "amount", "when")
-SecureLevel = mkComponent("SecureLevel", "secure")
-IdealLevel= mkComponent("IdealLevel", "ideal")
-LongDescription = mkComponent("LongDescription", "longdescription")
-Notes = mkComponent("Notes", "notes")
-
-concept_components = [Concept, Description, Depends, Suggests, NGramDecay, SecureLevel, IdealLevel, LongDescription, Notes]
-
-# Components used in Resources
-Resource = mkComponent("Resource", "logical_id")
-Title = mkComponent("Title", "title")
-Name = mkComponent("Name", "name")
-Url = mkComponent("Url", "url")
-CoversConcept = mkComponent("CoversConcept", "concept")
-NGramDelta = mkComponent("NGramDelta", "op", "ngram", "delta")
-NGramConstraint = mkComponent("NGramConstraint", "op","ngram", "level")
-DependsResource = mkComponent("DependsResource", "depends_resource")
-DateUpdated = mkComponent("DateUpdated", "date_updated")
-Template = mkComponent("Template", "template")
-SourceForm = mkComponent("SourceForm", "source_form")
-ResourceSpecification = mkComponent("ResourceSpecification", "resource_specification")
-ResourceContent= mkComponent("ResourceContent", "resource_content")
-
-resource_components = [Resource, Title, Name, Url, CoversConcept, NGramDelta, 
-                       NGramConstraint, DependsResource, DateUpdated, Template, 
-                       SourceForm, ResourceSpecification, ResourceContent]
 
 
 def json_concept_to_entity_concept(concept):
