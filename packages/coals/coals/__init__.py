@@ -111,7 +111,7 @@ def find_tutorials_for_user(tutorials, user):
     return candidates
 
 
-def filter_secure_resources(world, candidates, user): # K
+def filter_secure_resources(world, candidates, user): # FIXME: WORLD.CONCEPTS could be passed in instead of world
     # Remove the tutorials the user is secure with
     shoulddo = []
     optional = []
@@ -152,7 +152,7 @@ def filter_resources_done(resources, user): # K
     return resources_not_done
 
 
-def get_resources_dependencies(world, resource):
+def get_resources_dependencies(world, resource):  # FIXME: WORLD.CONCEPTS could be passed in instead of world
     resource_depends = set()
     resource_concepts = [ r.concept  for r in resource.get_components("CoversConcept") ]
 
@@ -179,7 +179,7 @@ def get_resources_dependencies(world, resource):
     return resource_depends
 
 
-def requirements_for_resource(world, resource): # Concepts too...  # K
+def requirements_for_resource(world, resource): # Concepts too...  # KCONCEPTS 
     resource_depends = get_resources_dependencies(world, resource)
     requirements = {}
     r_ngrams = {}
@@ -223,7 +223,7 @@ def find_resources_for_user(world, resources, user): # K
     return candidate_resources 
 
 
-def update_user_for_resource(user, resource): # TBD
+def update_user_for_resource(user, resource):
     Debug("Updating user state")
 
     resource_id = resource.get_component("Resource").logical_id
@@ -234,7 +234,7 @@ def update_user_for_resource(user, resource): # TBD
             user["resources_done"].append(resource_id)
 
 
-def present_resource(world, resource): # K
+def present_resource(world, resource): # FIXME: WORLD.CONCEPTS could be passed in instead of world
     concepts = [ x.concept for x in resource.get_components("CoversConcept") ]
     Debug("CONCEPTS", concepts)
 
@@ -255,7 +255,7 @@ def present_resource(world, resource): # K
     print()
 
 
-def concept_ids(world):
+def concept_ids(world): # FIXME: WORLD.CONCEPTS could be passed in instead of world
     ids = []
     for concept in world.get("Concept"):
         logical_id = concept.get_component("Concept").logical_id
@@ -263,7 +263,7 @@ def concept_ids(world):
     return list(set(ids))
 
 
-def resource_ids(world):
+def resource_ids(world):  # FIXME: WORLD.RESOURCES could be passed in instead of world
     ids = []
     for resource in world.get("Resource"):
         logical_id = resource.get_component("Resource").logical_id
@@ -271,7 +271,8 @@ def resource_ids(world):
     return list(set(ids))
 
 
-def infer_concepts_and_ngram_deltas(world):
+def infer_concepts_and_ngram_deltas(world):   # FIXME: WORLD.RESOURCES + WORLD.CONCEPTS could be passed in instead of world
+                                              # NOTE: WORLD.CONCEPTS  **CHANGES** (enlargens) as a result of this call
     "infer ngram deltas for resources that don't define them"
     resources = world.get("Resource")
     concepts = world.get("Concept")
@@ -310,7 +311,7 @@ def infer_concepts_and_ngram_deltas(world):
                 concept_ids.append(covered_concept)
 
 
-def infer_conceptual_dependencies(world):
+def infer_conceptual_dependencies(world): # FIXME: WORLD.RESOURCES could be passed in instead of world
     "This method infers all the dependencies between the concepts"
 
     # Structures to build
