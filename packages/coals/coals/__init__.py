@@ -26,36 +26,12 @@ from .coals_components import NGramConstraint
 # Shouldn't that be handled by the ECS system somehow?
 from .deserialise import initialise_system
 
+# Console UI related functionality
+from .util import banner, choose_numerical_option, display_menu
+
 def Debug(*args):
     if debug:
         print(*args)
-
-
-# -- Simple Command line UI tools ----------------------------------------------
-def banner(what, detail):
-    print(what,":")
-    print("--------------------------------------------------------------")
-    if type(detail) in [ dict, list ]:
-        print(json.dumps(detail, indent=4))
-    else:
-        print(detail)
-    print("--------------------------------------------------------------")
-    print()
-
-
-def choose_numerical_option(tag, minoption, maxoption, default=None):
-    while True:
-        option = input(tag)
-        if default:
-            if option == "":
-                return default
-        try:
-            opt_num = int(option)
-        except ValueError:
-            print("Must be a value between %d and %d (inclusive)" % (minoption, maxoption))
-        if minoption <= opt_num <= maxoption:
-            return opt_num
-            print("Must be a value between %d and %d (inclusive)" % (minoption, maxoption))
 
 
 def build_menu_options(candidates):
@@ -67,15 +43,6 @@ def build_menu_options(candidates):
         options[str(count)] = candidate
         count = count + 1
     return options, menu_items
-
-
-def display_menu(menu_items):
-    print("Menu.")
-    print()
-    for menu_item in menu_items:
-        print(menu_item)
-
-    print()
 
 
 def ask_user_to_choose_resource(candidates):
