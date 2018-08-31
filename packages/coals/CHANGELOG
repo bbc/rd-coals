@@ -1,0 +1,80 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+Versions starting are development versions and may break backwards
+compatibility. See `SEMVER.md` in the root of the repository for more
+details
+
+## [0.1.3] - UNRELEASED
+
+### New
+
+* `PRIVACY.md` - initial version
+* `CONTRIBUTING.md` - initial version
+* `CLA.md` - placeholder
+* `SEMVER.md` - how this project handles semantic versioning.
+* `Makefile` in each package recommends installing package after building debs
+* `CHANGELOG` - added
+
+### What's been fixed?
+
+* Hashbang line fixed in `packages/ecs_core/examples/simple_game/simple_ecs_game.py`
+* Typoes in Makefiles
+
+### Internal Changes
+
+* `coals.utils` created, various utility functions moved there
+* `coals.coals_components` created, all Components moved into there
+* Added target `devloop` to `packages/coals/Makefile` to make package testing simpler
+* Added `coals.deserialise`. This may disappear, in favour of better support in ecs_core instead. Undecided at present.
+* Removed global var "world" from `coals.__init__.py` Change implies need better support for systems.
+
+### Other
+
+*
+
+
+
+## [0.1.2] - 2018-05-31
+
+Internal Release
+
+### New
+
+* Named changed to COALS - Community Oriented Adaptive Learning System
+
+### What's been fixed?
+
+* Primarily the name. Some typoes
+
+### Internal Changes
+
+* Various package fixes to coals
+
+### Other
+
+* Added "linux" concept for example/demos
+
+
+
+## [0.1.1] - 2018-04-23
+
+Internal Release
+
+### New
+
+* Initial release 
+
+### What's been fixed?
+
+* It's all new
+
+### Internal Changes
+
+* Everything
+
+### Other
+
+* Not released publicly. 
+
