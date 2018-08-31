@@ -37,7 +37,7 @@ packages = find_packages(".")
 package_names = packages.keys()
 
 setup(name = "coals",
-      version = "0.1.2",
+      version = "0.1.3",
       description = "An Adaptive Learning System Core",
       author='Michael Sparks',
       author_email="michael.sparks@bbc.co.uk",
