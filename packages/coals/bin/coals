@@ -34,13 +34,13 @@ Debug(world.get("Resource"))
 banner("All Concepts:",", ".join( concept_ids(world) ))
 banner("All resources:",", ".join( resource_ids(world) ))
 
-infer_concepts_and_ngram_deltas()
-infer_conceptual_dependencies()
+infer_concepts_and_ngram_deltas(world)
+infer_conceptual_dependencies(world)
 
 while not done:
 
-    candidates = find_resources_for_user(world.get("Resource"), user)
-    candidates, optional = filter_secure_resources(candidates, user)
+    candidates = find_resources_for_user(world, world.get("Resource"), user)
+    candidates, optional = filter_secure_resources(world, candidates, user)
     if len(optional) > 0:
         if user["extension"] == None:
             print("There are optional tutorials right now")
@@ -87,7 +87,7 @@ while not done:
 
     resource = ask_user_to_choose_resource(candidates)
 
-    present_resource(resource)
+    present_resource(world, resource)
     input("press return when done\n")
 
     update_user_for_resource(user,resource)

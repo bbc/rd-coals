@@ -13,149 +13,22 @@ import pprint
 import os
 
 from ecs_core.ecs_core import Component, System, World, Entity, Quit, mkComponent
-from .util import load_mime_like_entity_collection
-from .coals_components import *
+from .coals_components import concept_components
+from .coals_components import resource_components
+
+# Inferring concepts
+from .coals_components import NGramDelta, Concept, Description, SecureLevel, IdealLevel, LongDescription, Notes, NGramDecay 
+# Inferring constraints
+from .coals_components import NGramConstraint
+
+# Deserialisation 
+# Hmm. Really?
+# Shouldn't that be handled by the ECS system somehow?
+from .deserialise import initialise_system
 
 def Debug(*args):
     if debug:
         print(*args)
-
-
-def json_concept_to_entity_concept(concept):
-    C = Entity()
-    for key in concept:
-        if key == "id":
-            for item in concept[key]:
-                C.add( Concept(logical_id=item) )
-        if key == "description":
-            for item in concept[key]:
-                C.add( Description(description=item))
-        if key == "depends":
-            for item in concept[key]:
-                C.add( Depends(depends=item))
-        if key == "suggests":
-            for item in concept[key]:
-                C.add( Suggests(suggests=item))
-        if key == "secure":
-            for item in concept[key]:
-                C.add( SecureLevel(secure=int(item)))
-        if key == "ideal":
-            for item in concept[key]:
-                C.add( IdealLevel(ideal=int(item)))
-        if key == "preamble":
-            item = "\n".join(concept[key])
-            C.add( LongDescription(longdescription=item))
-        if key == "postamble":
-            item = "\n".join(concept[key])
-            C.add( Notes(notes=item))
-        if key == "ngram_decay":
-            for item in concept[key]:
-                parts = item.split(" ")
-                if len(parts) == 3:
-                    decay_type, amount, when = parts
-                    C.add( NGramDecay(decay_type=decay_type, amount=float(amount), when=when))
-    return C
-
-
-def json_resource_to_entity_resource(resource):
-    R = Entity()
-    for key in resource:
-        if key == "id":
-            for item in resource[key]:
-                R.add( Resource(logical_id=item) )
-        if key == "title":
-            for item in resource[key]:
-                R.add( Title(title=item) )
-        if key == "name":
-            for item in resource[key]:
-                R.add( Name(name=item) )
-        if key == "url":
-            for item in resource[key]:
-                R.add( Url(url=item) )
-        if key == "concept":
-            for item in resource[key]:
-                R.add( CoversConcept(concept=item) )
-        if key == "depends_resource":
-            for item in resource[key]:
-                R.add( DependsResource(depends_resource=item) )
-        if key == "updated":
-            for item in resource[key]:
-                R.add( DateUpdated(date_updated=item) )
-        if key == "template":
-            for item in resource[key]:
-                R.add( Template(template=item) )
-        if key == "source_form":
-            for item in resource[key]:
-                R.add( SourceForm(source_form=item) )
-        if key == "preamble":
-            item = "\n".join(resource[key])
-            R.add( ResourceSpecification(resource_specification=item))
-        if key == "postamble":
-            item = "\n".join(resource[key])
-            R.add( ResourceContent(resource_content=item))
-        if key == "ngram_constraint":
-            for item in resource[key]:
-                parts = item.split(" ")
-                if len(parts) == 3:
-                    op, ngram, level = parts
-                    R.add( NGramConstraint(op=op, ngram=ngram, level=int(level)))
-        if key == "ngram_delta":
-            for item in resource[key]:
-                parts = item.split(" ")
-                if len(parts) == 3:
-                    op, ngram, delta = parts
-                    R.add( NGramDelta(op=op, ngram=ngram, delta=int(delta)))
-    return R
-
-
-def rebuild_world_state(world):
-    concepts_json_world = load_mime_like_entity_collection("concepts")
-    resources_json_world = load_mime_like_entity_collection("resources")
-
-    for concept in concepts_json_world:
-        C = json_concept_to_entity_concept(concept)
-        world.add_entity(C)
-
-    for resource in resources_json_world:
-        R = json_resource_to_entity_resource(resource)
-        world.add_entity(R)
-
-    return world
-
-
-def last_mod_directory(directory):
-    last_mod = os.stat(directory).st_mtime  # Start off with when directory changed
-    for filename in os.listdir(directory):
-        mod_time = os.stat(os.path.join(directory, filename)).st_mtime
-        if mod_time > last_mod:
-            last_mod = mod_time
-    return last_mod
-
-
-def initialiseWorld():
-    world = World()
-    world.add_component_types(*concept_components)
-    world.add_component_types(*resource_components)
-    return world
-
-
-def initialise_system():
-    global world
-    world = initialiseWorld()
-    concepts_last_mod = last_mod_directory("concepts")
-    resources_last_mod = last_mod_directory("resources")
-
-    try:
-        cache_last_mod = os.stat("stat_file.json").st_mtime
-        if cache_last_mod < concepts_last_mod:
-            raise ValueError("Concept cache invalid")
-        if cache_last_mod < resources_last_mod:
-            raise ValueError("Resource Cache invalid")
-        world.restore_state()
-    except:
-        world = rebuild_world_state(world)
-
-    return world
 
 
 # -- Simple Command line UI tools ----------------------------------------------
@@ -238,7 +111,7 @@ def find_tutorials_for_user(tutorials, user):
     return candidates
 
 
-def filter_secure_resources(candidates, user): # K
+def filter_secure_resources(world, candidates, user): # K
     # Remove the tutorials the user is secure with
     shoulddo = []
     optional = []
@@ -279,7 +152,7 @@ def filter_resources_done(resources, user): # K
     return resources_not_done
 
 
-def get_resources_dependencies(resource): # K
+def get_resources_dependencies(world, resource):
     resource_depends = set()
     resource_concepts = [ r.concept  for r in resource.get_components("CoversConcept") ]
 
@@ -306,8 +179,8 @@ def get_resources_dependencies(resource): # K
     return resource_depends
 
 
-def requirements_for_resource(resource): # Concepts too...  # K
-    resource_depends = get_resources_dependencies(resource)
+def requirements_for_resource(world, resource): # Concepts too...  # K
+    resource_depends = get_resources_dependencies(world, resource)
     requirements = {}
     r_ngrams = {}
 
@@ -331,20 +204,20 @@ def requirements_for_resource(resource): # Concepts too...  # K
     return requirements
 
 
-def user_matches_resource_requirements(user, resource): # K
-    requirements = requirements_for_resource(resource)
+def user_matches_resource_requirements(world, user, resource): # K
+    requirements = requirements_for_resource(world, resource)
     for concept_id in requirements:
         if user["ngrams"].get(concept_id, 0) < requirements[concept_id]:
             return False
     return True
 
 
-def find_resources_for_user(resources, user): # K
+def find_resources_for_user(world, resources, user): # K
 
     resources = filter_resources_done(resources, user)
     candidate_resources = []
     for resource in resources:
-        if user_matches_resource_requirements(user, resource):
+        if user_matches_resource_requirements(world, user, resource):
             candidate_resources.append(resource)
 
     return candidate_resources 
@@ -361,7 +234,7 @@ def update_user_for_resource(user, resource): # TBD
             user["resources_done"].append(resource_id)
 
 
-def present_resource(resource): # K
+def present_resource(world, resource): # K
     concepts = [ x.concept for x in resource.get_components("CoversConcept") ]
     Debug("CONCEPTS", concepts)
 
@@ -398,7 +271,7 @@ def resource_ids(world):
     return list(set(ids))
 
 
-def infer_concepts_and_ngram_deltas():
+def infer_concepts_and_ngram_deltas(world):
     "infer ngram deltas for resources that don't define them"
     resources = world.get("Resource")
     concepts = world.get("Concept")
@@ -437,7 +310,7 @@ def infer_concepts_and_ngram_deltas():
                 concept_ids.append(covered_concept)
 
 
-def infer_conceptual_dependencies():
+def infer_conceptual_dependencies(world):
     "This method infers all the dependencies between the concepts"
 
     # Structures to build
@@ -513,5 +386,3 @@ def infer_conceptual_dependencies():
                 resources_byid[resource].add(constraint)
                 Debug("Dependency")
                 Debug(resource, "depends on", concept)
-
-world = None
