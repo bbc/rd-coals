@@ -313,14 +313,6 @@ def ask_user_to_choose_resource(candidates):
     return resource
 
 
-def update_user(tutorial, user):
-    Debug("Updating user state")
-    for ngram in tutorial["ngram_boost"]:
-        user["ngrams"][ngram] = user["ngrams"].get(ngram, 0) + tutorial["ngram_boost"][ngram]
-        if tutorial["id"] not in user["tutorials_done"]:
-            user["tutorials_done"].append(tutorial["id"])
-
-
 def find_tutorials_for_user(tutorials, user):
     candidates = []
     for tutorial in tutorials:
