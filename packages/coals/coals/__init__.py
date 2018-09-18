@@ -21,9 +21,6 @@ from .coals_components import NGramDelta, Concept, Description, SecureLevel, Ide
 # Inferring constraints
 from .coals_components import NGramConstraint
 
-# Deserialisation 
-# Hmm. Really?
-# Shouldn't that be handled by the ECS system somehow?
 from .deserialise import initialise_system
 
 # Console UI related functionality
