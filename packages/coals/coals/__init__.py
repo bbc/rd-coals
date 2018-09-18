@@ -103,26 +103,34 @@ def update_user_for_resource(user, resource):
             user["resources_done"].append(resource_id)
 
 
-def present_resource(world, resource): # FIXME: WORLD.CONCEPTS could be passed in instead of world
-    concepts = [ x.concept for x in resource.get_components("CoversConcept") ]
-    Debug("CONCEPTS", concepts)
-
-    concept_descriptions = []
-    for concept in world.get("Concept"):
-        if concept.get_component("Concept").logical_id in concepts:
-            concept_descriptions.append(concept.get_component("Description").description)
-
-    name = resource.get_component("Name").name
-    location = resource.get_component("Url").url
-    Debug()
+def Print_resource(name, location, concept_descriptions):
     print("Resource:\t", name)
     print("Location:\t", location)
     print(repr(concept_descriptions))
     print("CoversConcepts:\t", ";".join(concept_descriptions))
     print()
-
     print()
 
+
+def get_concepts(world, resource):
+    return [ x.concept for x in resource.get_components("CoversConcept") ]
+
+
+def extract_concept_descriptions(world, concepts):
+    concept_descriptions = []
+    for concept in world.get("Concept"):
+        if concept.get_component("Concept").logical_id in concepts:
+            concept_descriptions.append(concept.get_component("Description").description)
+    return concept_descriptions
+
+
+def present_resource(world, resource): # FIXME: WORLD.CONCEPTS could be passed in instead of world
+    resource_concepts = get_concepts(world, resource)
+    concept_descriptions = extract_concept_descriptions(world, resource_concepts)
+    name = resource.get_component("Name").name
+    location = resource.get_component("Url").url
+
+    Print_resource(name, location, concept_descriptions)
 
 def concept_ids(world): # FIXME: WORLD.CONCEPTS could be passed in instead of world
     ids = []
