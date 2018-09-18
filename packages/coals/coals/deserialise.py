@@ -14,6 +14,7 @@ import os
 
 from ecs_core.ecs_core import Component, System, World, Entity, Quit, mkComponent
 from .coals_components import *
+from .util import slurp
 
 # Deserialistion of MIME-like representation of entities
 
@@ -73,8 +74,8 @@ def load_mime_like_entity_collection(directory):
             if debug:
                 raise
             else:
-                print("Problem with file", filename, "...skipping")
-                print("           Detail", e)
+                print("Problem with file:", filename, "...skipping")
+                print("           Detail:", e)
                 continue
         json_world.append(json_entity)
     return json_world
