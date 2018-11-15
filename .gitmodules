@@ -1,0 +1,6 @@
+[submodule "packages/coals"]
+	path = packages/coals
+	url = https://github.com/bbc/coals_core
+[submodule "packages/ecs_core"]
+	path = packages/ecs_core
+	url = https://github.com/bbc/ecs_core
